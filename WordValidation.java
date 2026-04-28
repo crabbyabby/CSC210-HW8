@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -14,6 +17,22 @@ public class WordValidation implements SpellingOperations {
    */
   public WordValidation(String filename) {
     // You choose which implementation to use.
+    Scanner file = null;
+    HashSetDictionary dictionary = new HashSetDictionary();
+
+    try {
+      file = new Scanner(new File(filename));
+    } catch (FileNotFoundException e) {
+      System.err.println("Cannot locate file.");
+      System.exit(-1);
+    }
+
+    while (file.hasNextLine()) {
+      String word = file.nextLine().replaceAll("\\p{P}", "").toLowerCase();
+      dictionary.add(word);
+    }
+
+    file.close();
   }
 
   /**
@@ -34,5 +53,9 @@ public class WordValidation implements SpellingOperations {
    */
   public Set<String> nearMisses(String query) {
     return new HashSet<>();
+  }
+
+  public static void main(String[] args) {
+    WordValidation valid = new WordValidation("words.txt");
   }
 }
