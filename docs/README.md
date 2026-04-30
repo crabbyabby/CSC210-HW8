@@ -15,6 +15,8 @@ If anyone was particularly helpful, please give them a shout-out here:
 ## References
 
 Any references or resources used besides JavaDoc and course materials:
+https://www.geeksforgeeks.org/java/java-string-manipulation-best-practices-for-clean-code/
+https://www.geeksforgeeks.org/java/stringbuilder-class-in-java-with-examples/ 
 
 If you used generative AI, how did you use it? What role did it play in your learning?
 

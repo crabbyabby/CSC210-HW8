@@ -42,6 +42,11 @@ public class WordValidation implements SpellingOperations {
    * @return true if the word is in the dictionary
    */
   public boolean containsWord(String query) {
+    query = query.replaceAll("\\p{P}", "").toLowerCase(); 
+
+    if (dictionary.contains(query)) {
+      return true;
+    }
     return false;
   }
 
@@ -53,6 +58,46 @@ public class WordValidation implements SpellingOperations {
    */
   public Set<String> nearMisses(String query) {
     return new HashSet<>();
+  }
+
+  public Set<String> deletions(String query) {
+    HashSet<String> deletions = new HashSet<String>();
+    
+    for (int i = 0; i < query.length(); i++) {
+      StringBuilder word = new StringBuilder(query);
+      word.deleteCharAt(i);
+
+      if (dictionary.contains(word.toString())) {
+        deletions.add(word.toString());
+      }
+    }
+
+    return deletions;
+  }
+
+  public Set<String> insertions(String query) {
+    HashSet<String> insertions = new HashSet<String>();
+
+    char[] alphabet = {'a'};
+    return insertions;
+  }
+
+  public Set<String> substitutions(String query) {
+    HashSet<String> substitutes = new HashSet<String>();
+
+    return substitutes;
+  }
+
+  public Set<String> transpose(String query) {
+    HashSet<String> transpose = new HashSet<String>();
+
+    return transpose;
+  }
+
+  public Set<String> split(String query) {
+    HashSet<String> split = new HashSet<String>();
+
+    return split;
   }
 
   public static void main(String[] args) {
