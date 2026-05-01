@@ -98,9 +98,9 @@ public class WordValidation implements SpellingOperations {
    */
   public Set<String> insertions(String query) {
     HashSet<String> insertions = new HashSet<String>();
-    for (int i = 0; i < query.length(); i++) {
+    for (int i = 0; i <= query.length(); i++) {
 
-      for (char c = 'a'; c < 'z'; c++) {
+      for (char c = 'a'; c <= 'z'; c++) {
         StringBuilder word = new StringBuilder(query);
         word.insert(i, c);
 
@@ -125,7 +125,7 @@ public class WordValidation implements SpellingOperations {
     for (int i = 0; i < query.length(); i++) {
       StringBuilder word = new StringBuilder(query);
 
-      for (char c = 'a'; c < 'z'; c++) {
+      for (char c = 'a'; c <= 'z'; c++) {
         word.setCharAt(i, c);
 
          if (this.dictionary.contains(word.toString())) {
@@ -169,7 +169,7 @@ public class WordValidation implements SpellingOperations {
   public Set<String> split(String query) {
     HashSet<String> split = new HashSet<String>();
 
-    for (int i = 1; i < query.length()-1; i++) {
+    for (int i = 1; i < query.length(); i++) {
       StringBuilder word = new StringBuilder(query);
 
       word.insert(i, ' ');
