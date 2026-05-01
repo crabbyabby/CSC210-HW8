@@ -57,9 +57,23 @@ public class WordValidation implements SpellingOperations {
    * @return a set of valid suggestions that are one edit away
    */
   public Set<String> nearMisses(String query) {
-    return new HashSet<>();
+    query = query.replaceAll("\\p{P}", "").toLowerCase(); 
+    HashSet<String> nearMisses = new HashSet<String>();
+
+    nearMisses.addAll(deletions(query));
+    nearMisses.addAll(insertions(query));
+    nearMisses.addAll(substitutions(query));
+    nearMisses.addAll(transpose(query));
+    nearMisses.addAll(split(query));
+    return nearMisses;
   }
 
+  /**
+   * Generate valid deletions for a query word.
+   *
+   * @param query the word to check
+   * @return a set of valid suggestions that are one deletion away
+   */
   public Set<String> deletions(String query) {
     HashSet<String> deletions = new HashSet<String>();
     
@@ -67,7 +81,7 @@ public class WordValidation implements SpellingOperations {
       StringBuilder word = new StringBuilder(query);
       word.deleteCharAt(i);
 
-      if (dictionary.contains(word.toString())) {
+      if (this.dictionary.contains(word.toString())) {
         deletions.add(word.toString());
       }
     }
@@ -75,28 +89,96 @@ public class WordValidation implements SpellingOperations {
     return deletions;
   }
 
+  /**
+   * Generate valid insertions for a query word.
+   *
+   * @param query the word to check
+   * @return a set of valid suggestions that are one insertion away
+   */
   public Set<String> insertions(String query) {
     HashSet<String> insertions = new HashSet<String>();
+    for (int i = 0; i < query.length(); i++) {
 
-    char[] alphabet = {'a'};
+      for (char c = 'a'; c < 'z'; c++) {
+        StringBuilder word = new StringBuilder(query);
+        word.insert(i, c);
+
+        if (this.dictionary.contains(word.toString())) {
+          insertions.add(word.toString());
+        }
+      }
+    }
     return insertions;
   }
 
+
+  /**
+   * Generate valid substitutions for a query word.
+   *
+   * @param query the word to check
+   * @return a set of valid suggestions that are one substitution away
+   */
   public Set<String> substitutions(String query) {
     HashSet<String> substitutes = new HashSet<String>();
+
+    for (int i = 0; i < query.length(); i++) {
+      StringBuilder word = new StringBuilder(query);
+
+      for (char c = 'a'; c < 'z'; c++) {
+        word.setCharAt(i, c);
+
+         if (this.dictionary.contains(word.toString())) {
+          substitutes.add(word.toString());
+        }
+      }
+    }
 
     return substitutes;
   }
 
+  /**
+   * Generate valid transposes for a query word.
+   *
+   * @param query the word to check
+   * @return a set of valid suggestions that are one transpose away
+   */
   public Set<String> transpose(String query) {
     HashSet<String> transpose = new HashSet<String>();
+
+    for (int i = 0; i < query.length() - 1; i++) {
+      StringBuilder word = new StringBuilder(query);
+
+      char temp = word.charAt(i);
+      word.setCharAt(i, word.charAt(i+1));
+      word.setCharAt(i+1, temp);
+      if (this.dictionary.contains(word.toString())) {
+        transpose.add(word.toString());
+      }
+    }
 
     return transpose;
   }
 
+  /**
+   * Generate valid splits for a query word.
+   *
+   * @param query the word to check
+   * @return a set of valid suggestions that are one split away
+   */
   public Set<String> split(String query) {
     HashSet<String> split = new HashSet<String>();
 
+    for (int i = 1; i < query.length()-1; i++) {
+      StringBuilder word = new StringBuilder(query);
+
+      word.insert(i, ' ');
+      String left = query.substring(0, i);
+      String right = query.substring(i);
+
+      if (this.dictionary.contains(left) && this.dictionary.contains(right)) {
+        split.add(word.toString());
+      }
+    }
     return split;
   }
 
