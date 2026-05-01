@@ -19,6 +19,7 @@ public class WordValidation implements SpellingOperations {
     // You choose which implementation to use.
     Scanner file = null;
     HashSetDictionary dictionary = new HashSetDictionary();
+    this.dictionary = dictionary;
 
     try {
       file = new Scanner(new File(filename));

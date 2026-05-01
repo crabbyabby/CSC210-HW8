@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Run the spell checker from the command line.
@@ -8,6 +9,7 @@ import java.util.Map;
 public class SpellChecker {
   private static final String DEFAULT_DICTIONARY = "words.txt";
   private WordValidation validator;
+  private HashSet<String> repeats = new HashSet<String>(); 
 
   /**
    * Create a spell checker object.
@@ -69,13 +71,31 @@ public class SpellChecker {
    * @param args command-line arguments to spell-check
    */
   public static void main(String[] args) {
-    
-
-    // This code will analyze any words passed as command lines
     SpellChecker checker = new SpellChecker();
 
-    for (String word : args) {
-      checker.checkWord(word);
+    if (args.length > 0) {
+      // Command-line argument mode
+      for (String word : args) {
+        checker.checkWord(word);
+      }
+    } else {
+      // Standard-input file mode
+      Scanner scanner = new Scanner(System.in);
+      while (scanner.hasNext()) {
+        String word = scanner.next();
+        // Only report misspelled words, and only once per word
+        if (!checker.validator.containsWord(word)) {
+          if (!checker.repeats.contains(word)) {
+            checker.repeats.add(word);
+            Map<String, HashSet<String>> result = checker.checkSpelling(word);
+            if (result.containsKey(word)) {
+              System.out.println("Not found: " + word);
+              System.out.println("  Suggestions: " + result.get(word));
+            }
+          }
+        }
+      }
+      scanner.close();
     }
   }
 }
