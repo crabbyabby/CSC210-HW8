@@ -69,6 +69,7 @@ public class SpellChecker {
    * @param args command-line arguments to spell-check
    */
   public static void main(String[] args) {
+    
 
     // This code will analyze any words passed as command lines
     SpellChecker checker = new SpellChecker();

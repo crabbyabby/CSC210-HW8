@@ -163,7 +163,7 @@ public class WordValidation implements SpellingOperations {
    * Generate valid splits for a query word.
    *
    * @param query the word to check
-   * @return a set of valid suggestions that are one split away
+   * @return a set of valid suggestions that are one edit away
    */
   public Set<String> split(String query) {
     HashSet<String> split = new HashSet<String>();
